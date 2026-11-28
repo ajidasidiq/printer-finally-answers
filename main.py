@@ -31,6 +31,10 @@ def main() -> None:
     # else. Refuse to write an entry that would fail it.
     if not 1 <= len(ENTRY) <= 240:
         raise ValueError(f"entry is {len(ENTRY)} characters, gate needs 1-240")
+    # The sealed gate accepts one line only. Refuse any entry with a
+    # line break so a multi-line entry can never reach the gate.
+    if "\n" in ENTRY or "\r" in ENTRY:
+        raise ValueError("entry must be a single line, no newline characters")
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(ENTRY, encoding="utf-8")
 
